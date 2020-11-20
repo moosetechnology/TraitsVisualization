@@ -1,11 +1,11 @@
 Class {
-	#name : #BaselineOfFamixTraitsVisualizaion,
+	#name : #BaselineOfFamixTraitsVisualization,
 	#superclass : #BaselineOf,
 	#category : #BaselineOfFamixTraitsVisualization
 }
 
 { #category : #baselines }
-BaselineOfFamixTraitsVisualizaion >> baseline: spec [
+BaselineOfFamixTraitsVisualization >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [ 
@@ -14,28 +14,28 @@ BaselineOfFamixTraitsVisualizaion >> baseline: spec [
 ]
 
 { #category : #baselines }
-BaselineOfFamixTraitsVisualizaion >> baselineOfFamix: spec [
+BaselineOfFamixTraitsVisualization >> baselineOfFamix: spec [
 	spec
 		baseline: 'Famix'
 		with: [ spec repository: 'github://moosetechnology/Famix:v1.0.0/src' ]
 ]
 
 { #category : #baselines }
-BaselineOfFamixTraitsVisualizaion >> baselineOfTelescope: spec [
+BaselineOfFamixTraitsVisualization >> baselineOfTelescope: spec [
 	spec
 		baseline: 'TelescopeRoassal3'
 		with: [ spec repository: 'github://TelescopeSt/TelescopeRoassal3' ]
 ]
 
 { #category : #baselines }
-BaselineOfFamixTraitsVisualizaion >> defineDependencies: spec [
+BaselineOfFamixTraitsVisualization >> defineDependencies: spec [
 
 	self baselineOfFamix: spec.
 	self baselineOfTelescope: spec
 ]
 
 { #category : #baselines }
-BaselineOfFamixTraitsVisualizaion >> definePackages: spec [
+BaselineOfFamixTraitsVisualization >> definePackages: spec [
 
 	spec
 		package: 'Famix-TraitsVisualization'
