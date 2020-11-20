@@ -90,14 +90,6 @@ FTVTelescopeDrafts >> dynamicVisuForTrait: aTrait [
 	visu open
 ]
 
-{ #category : #roassal }
-FTVTelescopeDrafts >> expandingBoxesFor: aTrait [
-
-	FTVExpandingBoxes
-		runOnItem: aTrait
-		children: [ :trait | trait "traitUsers" traitComposition traits ]
-]
-
 { #category : #initialization }
 FTVTelescopeDrafts >> initialize [
 

@@ -74,6 +74,7 @@ FTVExpandingBoxes >> childrenFor: anItem [
 FTVExpandingBoxes >> initialize [
 
 	super initialize.
+	base when: RSMouseLeftClick do: [ :evt | self processLeftClick: evt ].
 	base @ (RSMenuActivable new menuDo: [ :menu :element | 
 		 menu add: 'Browse' target: element model selector: #browse ])
 ]
@@ -96,6 +97,23 @@ FTVExpandingBoxes >> open: shape [
 	shape addAll: ((self childrenFor: shape model) collect: [ :item | 
 			 self nodeFor: item ]).
 	self update
+]
+
+{ #category : #'as yet unclassified' }
+FTVExpandingBoxes >> processEvent: anEvent [
+
+	self flag:
+		'This is empty to avoid triggering left click action when right clicking. It should be improved at superclass level (in Roassal3)'
+]
+
+{ #category : #'as yet unclassified' }
+FTVExpandingBoxes >> processLeftClick: evt [
+
+	| shape |
+	shape := evt shape.
+	shape children
+		ifEmpty: [ self open: shape ]
+		ifNotEmpty: [ self close: shape ]
 ]
 
 { #category : #'as yet unclassified' }
