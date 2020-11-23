@@ -38,13 +38,18 @@ FTVTelescopeDrafts >> butterfly: aTrait [
 { #category : #drafts }
 FTVTelescopeDrafts >> cycleDependencies: aTrait [
 
-	TLCycleDependencies new
-		entities: { 
-				aTrait.
-				aTrait traitUsers.
-				aTrait traitComposition traits } flattened;
-		property: [ :trait | trait traitUsers ];
-		open
+	visu := TLCycleDependencies new
+		        entities: { 
+				        aTrait.
+				        (aTrait allUsers flattened select: #isTrait).
+				        aTrait traitComposition allTraits } flattened asSet;
+		        property: [ :trait | trait traitComposition traits ].
+
+	(visu > #packages) styleSheet borderColor: [ :trait | 
+		trait = aTrait
+			ifTrue: [ Color red ]
+			ifFalse: Color black ].
+	visu open
 ]
 
 { #category : #drafts }
