@@ -49,7 +49,9 @@ FTVTelescopeDrafts >> cycleDependencies: aTrait [
 		trait = aTrait
 			ifTrue: [ Color red ]
 			ifFalse: Color black ].
-	visu open
+	visu > #packages addInteraction:
+		(TLCustomAction block: [ :trait | trait browse ]) onRightClick.
+	^ visu open
 ]
 
 { #category : #drafts }
