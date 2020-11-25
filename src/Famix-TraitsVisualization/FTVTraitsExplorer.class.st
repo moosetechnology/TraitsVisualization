@@ -3,7 +3,7 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'traitsList',
-		'visualization'
+		'view'
 	],
 	#category : #'Famix-TraitsVisualization'
 }
@@ -14,7 +14,7 @@ FTVTraitsExplorer class >> defaultSpec [
 	^ SpPanedLayout newHorizontal
 		  add: #traitsList;
 		  position: 150;
-		  add: #visualization;
+		  add: #view;
 		  yourself
 ]
 
@@ -36,16 +36,16 @@ FTVTraitsExplorer class >> windowSize [
 	^ 600 @ 600
 ]
 
-{ #category : #update }
+{ #category : #visualization }
 FTVTraitsExplorer >> buildVisualizationFor: aTrait [
 
-	| visu |
-	visu := self newVisualizationFor: aTrait.
-	visualization script: [ :canvas | 
+	| visualization |
+	visualization := self newVisualizationFor: aTrait.
+	view script: [ :canvas | 
 		canvas @ RSCanvasController new noLegend ].
-	visu generator view: visualization canvas.
-	visu generateWith: visu generator.
-	visualization canvas zoomToFit
+	visualization generator view: view canvas.
+	visualization generateWith: visualization generator.
+	view canvas zoomToFit
 ]
 
 { #category : #initialization }
@@ -53,16 +53,11 @@ FTVTraitsExplorer >> initializePresenters [
 
 	super initializePresenters.
 	traitsList := self newList
-		              items:
-			              ((RPackageOrganizer default packageNamed:
-					                'Famix-Traits') classes select: #isTrait)
-				              asOrderedCollection;
+		              items: self traits;
 		              sortingBlock: [ :t1 :t2 | t1 name < t2 name ];
 		              whenSelectionChangedDo: [ :selection | 
 			              self buildVisualizationFor: selection selectedItem ].
-	visualization := SpRoassalPresenter new.
-	visualization script: [ :canvas | 
-		canvas @ RSCanvasController new noLegend ]
+	view := SpRoassalPresenter new
 ]
 
 { #category : #initialization }
@@ -73,21 +68,48 @@ FTVTraitsExplorer >> initializeWindow: aWindowPresenter [
 	aWindowPresenter initialExtent: self class windowSize
 ]
 
-{ #category : #update }
+{ #category : #visualization }
 FTVTraitsExplorer >> newVisualizationFor: aTrait [
 
-	| visu |
-	visu := TLCycleDependencies new
-		        entities: { 
-				        aTrait.
-				        (aTrait allUsers flattened select: #isTrait).
-				        aTrait traitComposition allTraits } flattened asSet;
-		        property: [ :trait | trait traitComposition traits ].
-	(visu > #packages) styleSheet borderColor: [ :trait | 
+	| visualization |
+	visualization := TLCycleDependencies new
+		                 entities: (self traitsToShowAround: aTrait);
+		                 property: [ :trait | trait traitComposition traits ].
+
+	(visualization > #packages) styleSheet borderColor: [ :trait | 
 		trait = aTrait
 			ifTrue: [ Color red ]
 			ifFalse: Color black ].
-	visu > #packages addInteraction:
-		(TLCustomAction block: [ :trait | trait browse ]) onRightClick.
-	^ visu
+
+	"(visu > #packages) styleSheet
+		nodeLabel: [ :trait | trait name withoutPrefix: 'Famix' ];
+		adaptNodeWidthFromLabel;
+		nodeLabelMaxWidth: 100."
+
+	"visualization > #packages addInteraction:
+		((TLCustomAction block: [ :node | node entity browse ]) withMenu:
+			 'Browse')."
+
+	visualization > #packages addInteraction:
+		(TLCustomAction block: [ :node | node entity browse ]) onRightClick.
+
+	^ visualization
+]
+
+{ #category : #helpers }
+FTVTraitsExplorer >> traits [
+
+	self flag: 'Probably a better way'.
+	^ ((RPackageOrganizer default packageNamed: 'Famix-Traits') classes
+	   , (RPackageOrganizer default packageNamed: 'Moose-Query') classes 
+		   select: #isTrait) asOrderedCollection
+]
+
+{ #category : #helpers }
+FTVTraitsExplorer >> traitsToShowAround: aTrait [
+
+	^ { 
+		  aTrait.
+		  (aTrait allUsers flattened select: #isTrait).
+		  aTrait traitComposition allTraits } flattened asSet
 ]
