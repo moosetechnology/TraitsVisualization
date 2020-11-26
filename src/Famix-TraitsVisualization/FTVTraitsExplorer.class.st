@@ -41,10 +41,22 @@ FTVTraitsExplorer class >> windowSize [
 ]
 
 { #category : #visualization }
-FTVTraitsExplorer >> buildVisualizationFor: aTrait [
+FTVTraitsExplorer >> buildBoxesVisualizationFor: aTrait [
+
+	view script: [ :canvas | 
+		FTVExpandingBoxes new
+			canvas: canvas;
+			children: [ :trait | trait traits ];
+			addItem: aTrait ].
+
+	view canvas zoomToFit
+]
+
+{ #category : #visualization }
+FTVTraitsExplorer >> buildTreeVisualizationFor: aTrait [
 
 	| visualization |
-	visualization := self newVisualizationFor: aTrait.
+	visualization := self treeVisualizationFor: aTrait.
 	view script: [ :canvas | 
 		canvas @ RSCanvasController new noLegend ].
 	visualization generator view: view canvas.
@@ -75,12 +87,18 @@ FTVTraitsExplorer >> initializePresenters [
 		              whenSelectionChangedDo: [ :selection | 
 			              traitsList items:
 					              (selection selectedItem classes select: #isTrait) ].
+	self initializeTraitsList.
+	view := SpRoassalPresenter new
+]
+
+{ #category : #initialization }
+FTVTraitsExplorer >> initializeTraitsList [
+
 	traitsList := self newList
 		              sortingBlock: [ :t1 :t2 | t1 name < t2 name ];
 		              whenSelectionChangedDo: [ :selection | 
-			              selection selectedItem ifNotNil: [ 
-					              self buildVisualizationFor: selection selectedItem ] ].
-	view := SpRoassalPresenter new
+			              self visualizeAsTree: selection selectedItem ];
+		              contextMenu: self traitsMenu
 ]
 
 { #category : #initialization }
@@ -91,8 +109,44 @@ FTVTraitsExplorer >> initializeWindow: aWindowPresenter [
 	aWindowPresenter initialExtent: self class windowSize
 ]
 
+{ #category : #helpers }
+FTVTraitsExplorer >> traits [
+
+	self flag: 'Probably a better way'.
+	^ ((RPackageOrganizer default packageNamed: 'Famix-Traits') classes
+	   , (RPackageOrganizer default packageNamed: 'Moose-Query') classes 
+		   select: #isTrait) asOrderedCollection
+]
+
+{ #category : #initialization }
+FTVTraitsExplorer >> traitsMenu [
+
+	^ SpMenuPresenter new
+		  addItem: [ :item | 
+			  item
+				  name: 'Browse';
+				  action: [ traitsList selectedItem browse ] ];
+		  addItem: [ :item | 
+			  item
+				  name: 'Visualize as tree';
+				  action: [ self visualizeAsTree: traitsList selectedItem ] ];
+		  addItem: [ :item | 
+			  item
+				  name: 'Visualize as expanding boxes';
+				  action: [ self visualizeAsBoxes: traitsList selectedItem ] ]
+]
+
+{ #category : #helpers }
+FTVTraitsExplorer >> traitsToShowAround: aTrait [
+
+	^ { 
+		  aTrait.
+		  (aTrait allUsers flattened select: #isTrait).
+		  aTrait traitComposition allTraits } flattened asSet
+]
+
 { #category : #visualization }
-FTVTraitsExplorer >> newVisualizationFor: aTrait [
+FTVTraitsExplorer >> treeVisualizationFor: aTrait [
 
 	| visualization |
 	visualization := TLCycleDependencies new
@@ -119,20 +173,14 @@ FTVTraitsExplorer >> newVisualizationFor: aTrait [
 	^ visualization
 ]
 
-{ #category : #helpers }
-FTVTraitsExplorer >> traits [
+{ #category : #visualization }
+FTVTraitsExplorer >> visualizeAsBoxes: aTrait [
 
-	self flag: 'Probably a better way'.
-	^ ((RPackageOrganizer default packageNamed: 'Famix-Traits') classes
-	   , (RPackageOrganizer default packageNamed: 'Moose-Query') classes 
-		   select: #isTrait) asOrderedCollection
+	aTrait ifNotNil: [ self buildBoxesVisualizationFor: aTrait ]
 ]
 
-{ #category : #helpers }
-FTVTraitsExplorer >> traitsToShowAround: aTrait [
+{ #category : #visualization }
+FTVTraitsExplorer >> visualizeAsTree: aTrait [
 
-	^ { 
-		  aTrait.
-		  (aTrait allUsers flattened select: #isTrait).
-		  aTrait traitComposition allTraits } flattened asSet
+	aTrait ifNotNil: [ self buildTreeVisualizationFor: aTrait ]
 ]

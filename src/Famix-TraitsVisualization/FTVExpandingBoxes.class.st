@@ -53,6 +53,12 @@ FTVExpandingBoxes >> addItems: someItems [
 ]
 
 { #category : #accessing }
+FTVExpandingBoxes >> canvas: aRSCanvas [
+
+	canvas := aRSCanvas
+]
+
+{ #category : #accessing }
 FTVExpandingBoxes >> children [
 
 	^ children ifNil: [ :item | children := {  } ]
