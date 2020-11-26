@@ -3,7 +3,8 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'traitsList',
-		'view'
+		'view',
+		'categories'
 	],
 	#category : #'Famix-TraitsVisualization'
 }
@@ -12,8 +13,11 @@ Class {
 FTVTraitsExplorer class >> defaultSpec [
 
 	^ SpPanedLayout newHorizontal
-		  add: #traitsList;
-		  position: 150;
+		  add: (SpPanedLayout newHorizontal
+				   add: #categories;
+				   add: #traitsList;
+				   yourself);
+		  position: 300;
 		  add: #view;
 		  yourself
 ]
@@ -33,7 +37,7 @@ FTVTraitsExplorer class >> title [
 
 { #category : #specs }
 FTVTraitsExplorer class >> windowSize [
-	^ 600 @ 600
+	^ 900 @ 600
 ]
 
 { #category : #visualization }
@@ -48,15 +52,34 @@ FTVTraitsExplorer >> buildVisualizationFor: aTrait [
 	view canvas zoomToFit
 ]
 
+{ #category : #helpers }
+FTVTraitsExplorer >> categories [
+
+	self flag: 'Maybe a better way to do it'.
+	^ (RPackageOrganizer default packageNamed: 'Famix-Traits') classTags
+		  asOrderedCollection
+		  add: ((RPackageOrganizer default packageNamed: 'Moose-Query') 
+				   classTagNamed: 'Traits');
+		  yourself
+]
+
 { #category : #initialization }
 FTVTraitsExplorer >> initializePresenters [
 
 	super initializePresenters.
-	traitsList := self newList
-		              items: self traits;
+	categories := self newList
+		              items: self categories;
+		              beSingleSelection;
+		              display: [ :tag | tag name ];
 		              sortingBlock: [ :t1 :t2 | t1 name < t2 name ];
 		              whenSelectionChangedDo: [ :selection | 
-			              self buildVisualizationFor: selection selectedItem ].
+			              traitsList items:
+					              (selection selectedItem classes select: #isTrait) ].
+	traitsList := self newList
+		              sortingBlock: [ :t1 :t2 | t1 name < t2 name ];
+		              whenSelectionChangedDo: [ :selection | 
+			              selection selectedItem ifNotNil: [ 
+					              self buildVisualizationFor: selection selectedItem ] ].
 	view := SpRoassalPresenter new
 ]
 
