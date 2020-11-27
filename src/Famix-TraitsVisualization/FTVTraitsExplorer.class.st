@@ -158,10 +158,10 @@ FTVTraitsExplorer >> treeVisualizationFor: aTrait [
 			ifTrue: [ Color red ]
 			ifFalse: Color black ].
 
-	"(visu > #packages) styleSheet
+	(visualization > #packages) styleSheet
 		nodeLabel: [ :trait | trait name withoutPrefix: 'Famix' ];
 		adaptNodeWidthFromLabel;
-		nodeLabelMaxWidth: 100."
+		nodeLabelMaxWidth: 100.
 
 	"visualization > #packages addInteraction:
 		((TLCustomAction block: [ :node | node entity browse ]) withMenu:

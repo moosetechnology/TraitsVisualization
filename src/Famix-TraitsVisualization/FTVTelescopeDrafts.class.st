@@ -74,6 +74,9 @@ FTVTelescopeDrafts >> dynamicVisuForTrait2: aTrait [
 	visu addInteraction:
 		(TLExpandCollapseNodesAction property: [ :trait | 
 			 trait traitUsers select: [ :class | class isTrait ] ]) onClick.
+	"visu addInteraction:
+		(TLExpandCollapseNodesAction property: [ :trait | trait traits ])
+			onClick."
 
 	visu addInteraction: (TLHideAction hide: #yourself) onRightClick.
 
