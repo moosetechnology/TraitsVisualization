@@ -39,5 +39,5 @@ BaselineOfFamixTraitsVisualization >> definePackages: spec [
 
 	spec
 		package: 'Famix-TraitsVisualization'
-		with: [ spec requires: #( 'Famix' 'TelescopeRoassal3' ) ]
+		with: [ spec requires: #( 'TelescopeRoassal3' ) ]
 ]
