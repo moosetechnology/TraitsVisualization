@@ -30,7 +30,7 @@ BaselineOfFamixTraitsVisualization >> baselineOfTelescope: spec [
 { #category : #baselines }
 BaselineOfFamixTraitsVisualization >> defineDependencies: spec [
 
-	self baselineOfFamix: spec.
+	"self baselineOfFamix: spec."
 	self baselineOfTelescope: spec
 ]
 
