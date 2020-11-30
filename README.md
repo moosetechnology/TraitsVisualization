@@ -2,7 +2,7 @@
 
 Graphical presentations of Famix Traits.
 
-To load this project in a Moose image:
+To load this project in a Moose (Pharo 9) image:
 ```smalltalk
 [ Metacello new
 	baseline: 'FamixTraitsVisualization';
