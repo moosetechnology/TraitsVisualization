@@ -6,7 +6,7 @@ Class {
 		'view',
 		'categories'
 	],
-	#category : #'Famix-TraitsVisualization'
+	#category : #'Famix-TraitsVisualization-Browser'
 }
 
 { #category : #specs }
@@ -47,9 +47,9 @@ FTVTraitsExplorer >> buildBoxesVisualizationFor: aTrait [
 		FTVExpandingBoxes new
 			canvas: canvas;
 			children: [ :trait | trait traits ];
-			addItem: aTrait ].
-
-	view canvas zoomToFit
+			addItem: aTrait.
+		canvas zoomToFit.
+		canvas @ RSCanvasController ]
 ]
 
 { #category : #visualization }
@@ -57,11 +57,23 @@ FTVTraitsExplorer >> buildTreeVisualizationFor: aTrait [
 
 	| visualization |
 	visualization := self treeVisualizationFor: aTrait.
-	view script: [ :canvas | 
-		canvas @ RSCanvasController new noLegend ].
+	view script: [ :canvas | canvas @ RSCanvasController new noLegend ].
 	visualization generator view: view canvas.
 	visualization generateWith: visualization generator.
-	view canvas zoomToFit
+	view canvas zoomToFit.
+	view canvas @ RSCanvasController
+]
+
+{ #category : #visualization }
+FTVTraitsExplorer >> buildUMLVisualizationFor: aTrait [
+
+	view script: [ :canvas | 
+		| builder |
+		builder := FTVTraitBuilder new.
+		builder traits: (self traitsToShowAround: aTrait).
+		builder renderIn: canvas.
+		canvas zoomToFit.
+		canvas @ RSCanvasController ]
 ]
 
 { #category : #helpers }
@@ -109,15 +121,6 @@ FTVTraitsExplorer >> initializeWindow: aWindowPresenter [
 	aWindowPresenter initialExtent: self class windowSize
 ]
 
-{ #category : #helpers }
-FTVTraitsExplorer >> traits [
-
-	self flag: 'Probably a better way'.
-	^ ((RPackageOrganizer default packageNamed: 'Famix-Traits') classes
-	   , (RPackageOrganizer default packageNamed: 'Moose-Query') classes 
-		   select: #isTrait) asOrderedCollection
-]
-
 { #category : #initialization }
 FTVTraitsExplorer >> traitsMenu [
 
@@ -133,7 +136,11 @@ FTVTraitsExplorer >> traitsMenu [
 		  addItem: [ :item | 
 			  item
 				  name: 'Visualize as expanding boxes';
-				  action: [ self visualizeAsBoxes: traitsList selectedItem ] ]
+				  action: [ self visualizeAsBoxes: traitsList selectedItem ] ];
+		  addItem: [ :item | 
+			  item
+				  name: 'Visualize as UML';
+				  action: [ self visualizeAsUML: traitsList selectedItem ] ]
 ]
 
 { #category : #helpers }
@@ -183,4 +190,10 @@ FTVTraitsExplorer >> visualizeAsBoxes: aTrait [
 FTVTraitsExplorer >> visualizeAsTree: aTrait [
 
 	aTrait ifNotNil: [ self buildTreeVisualizationFor: aTrait ]
+]
+
+{ #category : #visualization }
+FTVTraitsExplorer >> visualizeAsUML: aTrait [
+
+	aTrait ifNotNil: [ self buildUMLVisualizationFor: aTrait ]
 ]

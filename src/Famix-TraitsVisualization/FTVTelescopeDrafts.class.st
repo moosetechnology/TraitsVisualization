@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'visu'
 	],
-	#category : #'Famix-TraitsVisualization'
+	#category : #'Famix-TraitsVisualization-Drafts'
 }
 
 { #category : #dynamic }
