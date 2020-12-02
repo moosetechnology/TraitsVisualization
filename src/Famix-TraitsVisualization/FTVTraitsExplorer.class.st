@@ -40,7 +40,34 @@ FTVTraitsExplorer class >> windowSize [
 	^ 900 @ 600
 ]
 
-{ #category : #visualization }
+{ #category : #'visualization - boxes' }
+FTVTraitsExplorer >> addBoxesToMenu: menu [
+
+	menu addItem: [ :item | 
+		item
+			name: 'Visualize as expanding boxes';
+			action: [ self visualizeAsBoxes: traitsList selectedItem ] ]
+]
+
+{ #category : #'visualization - tree' }
+FTVTraitsExplorer >> addTreeToMenu: menu [
+
+	menu addItem: [ :item | 
+		item
+			name: 'Visualize as tree';
+			action: [ self visualizeAsTree: traitsList selectedItem ] ]
+]
+
+{ #category : #'visualization - UML' }
+FTVTraitsExplorer >> addUMLToMenu: menu [
+
+	menu addItem: [ :item | 
+		item
+			name: 'Visualize as UML';
+			action: [ self visualizeAsUML: traitsList selectedItem ] ]
+]
+
+{ #category : #'visualization - boxes' }
 FTVTraitsExplorer >> buildBoxesVisualizationFor: aTrait [
 
 	view script: [ :canvas | 
@@ -52,7 +79,7 @@ FTVTraitsExplorer >> buildBoxesVisualizationFor: aTrait [
 		canvas @ RSCanvasController ]
 ]
 
-{ #category : #visualization }
+{ #category : #'visualization - tree' }
 FTVTraitsExplorer >> buildTreeVisualizationFor: aTrait [
 
 	| visualization |
@@ -64,7 +91,7 @@ FTVTraitsExplorer >> buildTreeVisualizationFor: aTrait [
 	view canvas @ RSCanvasController
 ]
 
-{ #category : #visualization }
+{ #category : #'visualization - UML' }
 FTVTraitsExplorer >> buildUMLVisualizationFor: aTrait [
 
 	view script: [ :canvas | 
@@ -124,23 +151,16 @@ FTVTraitsExplorer >> initializeWindow: aWindowPresenter [
 { #category : #initialization }
 FTVTraitsExplorer >> traitsMenu [
 
-	^ SpMenuPresenter new
-		  addItem: [ :item | 
-			  item
-				  name: 'Browse';
-				  action: [ traitsList selectedItem browse ] ];
-		  addItem: [ :item | 
-			  item
-				  name: 'Visualize as tree';
-				  action: [ self visualizeAsTree: traitsList selectedItem ] ];
-		  addItem: [ :item | 
-			  item
-				  name: 'Visualize as expanding boxes';
-				  action: [ self visualizeAsBoxes: traitsList selectedItem ] ];
-		  addItem: [ :item | 
-			  item
-				  name: 'Visualize as UML';
-				  action: [ self visualizeAsUML: traitsList selectedItem ] ]
+	| menu |
+	menu := SpMenuPresenter new.
+	menu addItem: [ :item | 
+		item
+			name: 'Browse';
+			action: [ traitsList selectedItem browse ] ].
+	self addTreeToMenu: menu.
+	self addBoxesToMenu: menu.
+	self addUMLToMenu: menu.
+	^ menu
 ]
 
 { #category : #helpers }
@@ -152,7 +172,7 @@ FTVTraitsExplorer >> traitsToShowAround: aTrait [
 		  aTrait traitComposition allTraits } flattened asSet
 ]
 
-{ #category : #visualization }
+{ #category : #'visualization - tree' }
 FTVTraitsExplorer >> treeVisualizationFor: aTrait [
 
 	| visualization |
@@ -180,19 +200,19 @@ FTVTraitsExplorer >> treeVisualizationFor: aTrait [
 	^ visualization
 ]
 
-{ #category : #visualization }
+{ #category : #'visualization - boxes' }
 FTVTraitsExplorer >> visualizeAsBoxes: aTrait [
 
 	aTrait ifNotNil: [ self buildBoxesVisualizationFor: aTrait ]
 ]
 
-{ #category : #visualization }
+{ #category : #'visualization - tree' }
 FTVTraitsExplorer >> visualizeAsTree: aTrait [
 
 	aTrait ifNotNil: [ self buildTreeVisualizationFor: aTrait ]
 ]
 
-{ #category : #visualization }
+{ #category : #'visualization - UML' }
 FTVTraitsExplorer >> visualizeAsUML: aTrait [
 
 	aTrait ifNotNil: [ self buildUMLVisualizationFor: aTrait ]
