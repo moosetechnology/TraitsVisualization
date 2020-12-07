@@ -83,12 +83,11 @@ FTVTraitsExplorer >> buildBoxesVisualizationFor: aTrait [
 FTVTraitsExplorer >> buildTreeVisualizationFor: aTrait [
 
 	| visualization |
-	visualization := self treeVisualizationFor: aTrait.
+	visualization := FTVUsageGraph new forTrait: aTrait.
 	view script: [ :canvas | canvas @ RSCanvasController new noLegend ].
 	visualization generator view: view canvas.
 	visualization generateWith: visualization generator.
-	view canvas zoomToFit.
-	view canvas @ RSCanvasController
+	view canvas zoomToFit
 ]
 
 { #category : #'visualization - UML' }
@@ -96,7 +95,7 @@ FTVTraitsExplorer >> buildUMLVisualizationFor: aTrait [
 
 	view script: [ :canvas | 
 		| builder |
-		builder := FTVTraitBuilder new.
+		builder := FTVUMLTraitBuilder new.
 		builder traits: (self traitsToShowAround: aTrait).
 		builder renderIn: canvas.
 		canvas zoomToFit.
@@ -161,43 +160,6 @@ FTVTraitsExplorer >> traitsMenu [
 	self addBoxesToMenu: menu.
 	self addUMLToMenu: menu.
 	^ menu
-]
-
-{ #category : #helpers }
-FTVTraitsExplorer >> traitsToShowAround: aTrait [
-
-	^ { 
-		  aTrait.
-		  (aTrait allUsers flattened select: #isTrait).
-		  aTrait traitComposition allTraits } flattened asSet
-]
-
-{ #category : #'visualization - tree' }
-FTVTraitsExplorer >> treeVisualizationFor: aTrait [
-
-	| visualization |
-	visualization := TLCycleDependencies new
-		                 entities: (self traitsToShowAround: aTrait);
-		                 property: [ :trait | trait traitComposition traits ].
-
-	(visualization > #packages) styleSheet borderColor: [ :trait | 
-		trait = aTrait
-			ifTrue: [ Color red ]
-			ifFalse: Color black ].
-
-	(visualization > #packages) styleSheet
-		nodeLabel: [ :trait | trait name withoutPrefix: 'Famix' ];
-		adaptNodeWidthFromLabel;
-		nodeLabelMaxWidth: 100.
-
-	"visualization > #packages addInteraction:
-		((TLCustomAction block: [ :node | node entity browse ]) withMenu:
-			 'Browse')."
-
-	visualization > #packages addInteraction:
-		(TLCustomAction block: [ :node | node entity browse ]) onRightClick.
-
-	^ visualization
 ]
 
 { #category : #'visualization - boxes' }

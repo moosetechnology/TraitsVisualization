@@ -1,5 +1,5 @@
 Class {
-	#name : #FTVTraitBuilder,
+	#name : #FTVUMLTraitBuilder,
 	#superclass : #RSUMLAbstractBuilder,
 	#instVars : [
 		'traits'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #initialization }
-FTVTraitBuilder >> initialize [
+FTVUMLTraitBuilder >> initialize [
 
 	super initialize.
 	self
@@ -17,12 +17,12 @@ FTVTraitBuilder >> initialize [
 ]
 
 { #category : #hooks }
-FTVTraitBuilder >> objects [
+FTVUMLTraitBuilder >> objects [
 	^ traits
 ]
 
 { #category : #hooks }
-FTVTraitBuilder >> renderIn: aCanvas [
+FTVUMLTraitBuilder >> renderIn: aCanvas [
 
 	super renderIn: aCanvas.
 	self renderer edgeBuilder
@@ -35,7 +35,7 @@ FTVTraitBuilder >> renderIn: aCanvas [
 ]
 
 { #category : #accessing }
-FTVTraitBuilder >> traits: anObject [
+FTVUMLTraitBuilder >> traits: anObject [
 
 	traits := anObject
 ]

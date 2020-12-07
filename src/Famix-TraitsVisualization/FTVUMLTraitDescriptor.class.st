@@ -30,7 +30,9 @@ FTVUMLTraitDescriptor >> forPharo [
 
 	self
 		classname: #name;
-		instVars: [ :trait | trait instVarNames sorted ];
+		instVars: [ :trait | 
+			(trait instVarNames
+			 \ (trait allTraits flattened flatCollect: #instVarNames)) sorted ];
 		methods: [ :trait | 
 			trait localMethods sorted: [ :meth1 :meth2 | 
 					meth1 selector < meth2 selector ] ];
