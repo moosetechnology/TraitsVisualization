@@ -13,6 +13,25 @@ FTVUsageGraph >> borderColorFor: aTrait [
 	^ FTVTraitsTagging new colorForTrait: aTrait
 ]
 
+{ #category : #building }
+FTVUsageGraph >> buildVisualization [
+
+	super buildVisualization.
+	(self > #packages) styleSheet borderColor: [ :trait | 
+		self borderColorFor: trait ].
+
+	(self > #packages) styleSheet
+		nodeLabel: [ :trait | trait name withoutPrefix: 'Famix' ];
+		adaptNodeWidthFromLabel;
+		nodeLabelMaxWidth: 100.
+
+	"self > #packages addInteraction:
+		((TLCustomAction block: [ :node | node entity browse ]) withMenu:
+			 'Browse')."
+	self > #packages addInteraction:
+		(TLCustomAction block: [ :node | node entity browse ]) onRightClick
+]
+
 { #category : #configuration }
 FTVUsageGraph >> defaultColorForNode: aTrait [
 
