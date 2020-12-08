@@ -14,32 +14,6 @@ FTVUsageGraph >> borderColorFor: aTrait [
 ]
 
 { #category : #configuration }
-FTVUsageGraph >> buildVisualization [
-
-	| cycleCalculator |
-	self flag: '12/7/20 - To remove if PR in Telescope is accepted'.
-	cycleCalculator := self cycleCalculator.
-
-	(self > #packages) styleSheet backgroundColor: [ :namespace | 
-		(cycleCalculator findNode: namespace) isInCycle
-			ifTrue: [ self highlightColorForNode: namespace ]
-			ifFalse: [ self defaultColorForNode: namespace ] ].
-
-	self widthBlock ifNotNil: [ :blk | 
-		(self > #packages) styleSheet width: blk ].
-	self heightBlock ifNotNil: [ :blk | 
-		(self > #packages) styleSheet height: blk ].
-
-	self styleSheet > #connection backgroundColor: self edgeColor.
-
-	(self > #packages)
-		addNodesFromEntities: self entities;
-		connectFollowingProperty: self property;
-		addInteraction: self popup;
-		layout: self nodesLayout
-]
-
-{ #category : #configuration }
 FTVUsageGraph >> defaultColorForNode: aTrait [
 
 	^ mainTrait = aTrait
