@@ -7,7 +7,7 @@ To load this project in a Moose (Pharo 9) image:
 [ Metacello new
 	baseline: 'FamixTraitsVisualization';
 	repository: 'github://ClotildeToullec/FamixTraitsVisualization:main/src';
-	onConflictUseLoaded;
+	onConflictUseIncoming;
 	load ]
 	on: MCMergeOrLoadWarning
-	do: [ :warning | warning cancel ]
+	do: [ :warning | warning load ]
