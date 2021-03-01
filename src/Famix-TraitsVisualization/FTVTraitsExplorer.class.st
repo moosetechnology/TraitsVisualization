@@ -124,7 +124,7 @@ FTVTraitsExplorer >> initializePresenters [
 		              sortingBlock: [ :t1 :t2 | t1 name < t2 name ];
 		              whenSelectionChangedDo: [ :selection | 
 			              traitsList items:
-					              (selection selectedItem classes select: #isTrait) ].
+					              (selection selectedItem classes select: #isTrait) asOrderedCollection ].
 	self initializeTraitsList.
 	view := SpRoassalPresenter new
 ]
