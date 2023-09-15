@@ -80,11 +80,8 @@ FTVExpandingBoxes >> childrenFor: anItem [
 FTVExpandingBoxes >> initialize [
 
 	super initialize.
-	base
-		when: RSMouseLeftClick
-		do: [ :evt | self processLeftClick: evt ]
-		for: self.
-	base @ (RSMenuActivable new menuDo: [ :menu :element |
+	base when: RSMouseLeftClick do: [ :evt | self processLeftClick: evt ].
+	base @ (RSMenuActivable new menuDo: [ :menu :element | 
 		 menu add: 'Browse' target: element model selector: #browse ])
 ]
 
