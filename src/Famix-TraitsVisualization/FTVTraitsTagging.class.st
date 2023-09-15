@@ -21,10 +21,10 @@ FTVTraitsTagging >> colorForTrait: aTrait [
 	^ colorDict at: (self kind: aTrait)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FTVTraitsTagging >> entityTraits [
 
-	^ { 
+	^ {
 		  FamixTAnnotationType.
 		  FamixTAnnotationInstanceAttribute.
 		  FamixTPrimitiveType.
@@ -78,7 +78,7 @@ FTVTraitsTagging >> initialize [
 	self initializeKindsDictionary
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 FTVTraitsTagging >> initializeKindsDictionary [
 
 	kinds := Dictionary new.
@@ -96,10 +96,10 @@ FTVTraitsTagging >> kind: aTrait [
 			   ifNone: [ ^ 'Technical' ])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FTVTraitsTagging >> propertyTraits [
 
-	^ { 
+	^ {
 		  FamixTWithPackages.
 		  FamixTWithAttributes.
 		  FamixTWithThrownExceptions.
@@ -143,10 +143,10 @@ FTVTraitsTagging >> propertyTraits [
 		  FamixTSourceEntity }
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FTVTraitsTagging >> relationTraits [
 
-	^ { 
+	^ {
 		  FamixTAssociation.
 		  FamixTWithAccesses.
 		  FamixTAccess.
@@ -169,10 +169,10 @@ FTVTraitsTagging >> relationTraits [
 		  FamixTWithFileIncludes }
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FTVTraitsTagging >> technicalTraits [
 
-	^ { 
+	^ {
 		  FamixTMultipleFileAnchor.
 		  FamixTFileAnchor.
 		  FamixTRelativeSourceAnchor.
@@ -184,6 +184,6 @@ FTVTraitsTagging >> technicalTraits [
 		  FamixTUnknownSourceLanguage.
 
 		  FamixTSourceLanguage }
-	  , ((RPackageOrganizer default packageNamed: 'Moose-Query') 
+	  , ((RPackageOrganizer default packageNamed: 'Moose-Query')
 			   classTagNamed: 'Traits') classes asArray
 ]

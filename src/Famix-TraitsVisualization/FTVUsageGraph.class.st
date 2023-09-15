@@ -17,7 +17,7 @@ FTVUsageGraph >> borderColorFor: aTrait [
 FTVUsageGraph >> buildVisualization [
 
 	super buildVisualization.
-	(self > #packages) styleSheet borderColor: [ :trait | 
+	(self > #packages) styleSheet borderColor: [ :trait |
 		self borderColorFor: trait ].
 
 	(self > #packages) styleSheet
@@ -59,7 +59,7 @@ FTVUsageGraph >> popup [
 { #category : #initialization }
 FTVUsageGraph >> traitsToShowAround: aTrait [
 
-	^ { 
+	^ {
 		  aTrait.
 		  (aTrait allUsers flattened select: #isTrait).
 		  aTrait traitComposition allTraits } flattened asSet

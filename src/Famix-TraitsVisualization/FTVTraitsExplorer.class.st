@@ -9,15 +9,15 @@ Class {
 	#category : #'Famix-TraitsVisualization-Browser'
 }
 
-{ #category : #specs }
-FTVTraitsExplorer class >> defaultSpec [
+{ #category : #layout }
+FTVTraitsExplorer class >> defaultLayout [
 
 	^ SpPanedLayout newHorizontal
 		  add: (SpPanedLayout newHorizontal
 				   add: #categories;
 				   add: #traitsList;
 				   yourself);
-		  position: 300;
+		  positionOfSlider: 300;
 		  add: #view;
 		  yourself
 ]
@@ -26,7 +26,7 @@ FTVTraitsExplorer class >> defaultSpec [
 FTVTraitsExplorer class >> open [
 
 	<script>
-	self new openWithSpec
+	self new open
 ]
 
 { #category : #specs }
@@ -43,7 +43,7 @@ FTVTraitsExplorer class >> windowSize [
 { #category : #'visualization - boxes' }
 FTVTraitsExplorer >> addBoxesToMenu: menu [
 
-	menu addItem: [ :item | 
+	menu addItem: [ :item |
 		item
 			name: 'Visualize as expanding boxes';
 			action: [ self visualizeAsBoxes: traitsList selectedItem ] ]
@@ -52,7 +52,7 @@ FTVTraitsExplorer >> addBoxesToMenu: menu [
 { #category : #'visualization - tree' }
 FTVTraitsExplorer >> addTreeToMenu: menu [
 
-	menu addItem: [ :item | 
+	menu addItem: [ :item |
 		item
 			name: 'Visualize as tree';
 			action: [ self visualizeAsTree: traitsList selectedItem ] ]
@@ -61,7 +61,7 @@ FTVTraitsExplorer >> addTreeToMenu: menu [
 { #category : #'visualization - UML' }
 FTVTraitsExplorer >> addUMLToMenu: menu [
 
-	menu addItem: [ :item | 
+	menu addItem: [ :item |
 		item
 			name: 'Visualize as UML';
 			action: [ self visualizeAsUML: traitsList selectedItem ] ]
@@ -70,7 +70,7 @@ FTVTraitsExplorer >> addUMLToMenu: menu [
 { #category : #'visualization - boxes' }
 FTVTraitsExplorer >> buildBoxesVisualizationFor: aTrait [
 
-	view script: [ :canvas | 
+	view script: [ :canvas |
 		FTVExpandingBoxes new
 			canvas: canvas;
 			children: [ :trait | trait traits ];
@@ -93,7 +93,7 @@ FTVTraitsExplorer >> buildTreeVisualizationFor: aTrait [
 { #category : #'visualization - UML' }
 FTVTraitsExplorer >> buildUMLVisualizationFor: aTrait [
 
-	view script: [ :canvas | 
+	view script: [ :canvas |
 		| builder |
 		builder := FTVUMLTraitBuilder new.
 		builder traits: (self traitsToShowAround: aTrait).
@@ -108,7 +108,7 @@ FTVTraitsExplorer >> categories [
 	self flag: 'Maybe a better way to do it'.
 	^ (RPackageOrganizer default packageNamed: 'Famix-Traits') classTags
 		  asOrderedCollection
-		  add: ((RPackageOrganizer default packageNamed: 'Moose-Query') 
+		  add: ((RPackageOrganizer default packageNamed: 'Moose-Query')
 				   classTagNamed: 'Traits');
 		  yourself
 ]
@@ -134,7 +134,7 @@ FTVTraitsExplorer >> initializeTraitsList [
 
 	traitsList := self newList
 		              sortingBlock: [ :t1 :t2 | t1 name < t2 name ];
-		              whenSelectionChangedDo: [ :selection | 
+		              whenSelectionChangedDo: [ :selection |
 			              self visualizeAsTree: selection selectedItem ];
 		              contextMenu: self traitsMenu
 ]
@@ -152,7 +152,7 @@ FTVTraitsExplorer >> traitsMenu [
 
 	| menu |
 	menu := SpMenuPresenter new.
-	menu addItem: [ :item | 
+	menu addItem: [ :item |
 		item
 			name: 'Browse';
 			action: [ traitsList selectedItem browse ] ].
@@ -160,6 +160,15 @@ FTVTraitsExplorer >> traitsMenu [
 	self addBoxesToMenu: menu.
 	self addUMLToMenu: menu.
 	^ menu
+]
+
+{ #category : #initialization }
+FTVTraitsExplorer >> traitsToShowAround: aTrait [
+
+	^ {
+		  aTrait.
+		  (aTrait allUsers flattened select: #isTrait).
+		  aTrait traitComposition allTraits } flattened asSet
 ]
 
 { #category : #'visualization - boxes' }

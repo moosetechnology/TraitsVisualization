@@ -12,7 +12,7 @@ FTVExpandingBoxes class >> example [
 
 	<script>
 	self
-		runOnItems: { 
+		runOnItems: {
 				FamixTNamed.
 				FamixTException }
 		children: [ :trait | trait traitComposition traits ]
@@ -35,14 +35,14 @@ FTVExpandingBoxes class >> runOnItems: someItems children: aBlockOrValuable [
 		run
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #adding }
 FTVExpandingBoxes >> addItem: anItem [
 
 	canvas add: (self nodeFor: anItem).
 	self update
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #adding }
 FTVExpandingBoxes >> addItems: someItems [
 
 	canvas add: (RSComposite new
@@ -70,7 +70,7 @@ FTVExpandingBoxes >> children: anObject [
 	children := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FTVExpandingBoxes >> childrenFor: anItem [
 
 	^ self children value: anItem
@@ -80,12 +80,15 @@ FTVExpandingBoxes >> childrenFor: anItem [
 FTVExpandingBoxes >> initialize [
 
 	super initialize.
-	base when: RSMouseLeftClick do: [ :evt | self processLeftClick: evt ].
-	base @ (RSMenuActivable new menuDo: [ :menu :element | 
+	base
+		when: RSMouseLeftClick
+		do: [ :evt | self processLeftClick: evt ]
+		for: self.
+	base @ (RSMenuActivable new menuDo: [ :menu :element |
 		 menu add: 'Browse' target: element model selector: #browse ])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #helpers }
 FTVExpandingBoxes >> nodeFor: anItem [
 
 	| com |
@@ -97,22 +100,22 @@ FTVExpandingBoxes >> nodeFor: anItem [
 	^ com
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #events }
 FTVExpandingBoxes >> open: shape [
 
-	shape addAll: ((self childrenFor: shape model) collect: [ :item | 
+	shape addAll: ((self childrenFor: shape model) collect: [ :item |
 			 self nodeFor: item ]).
 	self update
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #events }
 FTVExpandingBoxes >> processEvent: anEvent [
 
 	self flag:
 		'This is empty to avoid triggering left click action when right clicking. It should be improved at superclass level (in Roassal3)'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 FTVExpandingBoxes >> processLeftClick: evt [
 
 	| shape |
@@ -122,7 +125,7 @@ FTVExpandingBoxes >> processLeftClick: evt [
 		ifNotEmpty: [ self close: shape ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 FTVExpandingBoxes >> run [
 
 	canvas open

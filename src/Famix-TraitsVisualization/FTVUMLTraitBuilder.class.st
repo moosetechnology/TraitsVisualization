@@ -21,7 +21,7 @@ FTVUMLTraitBuilder >> objects [
 	^ traits
 ]
 
-{ #category : #hooks }
+{ #category : #rendering }
 FTVUMLTraitBuilder >> renderIn: aCanvas [
 
 	super renderIn: aCanvas.

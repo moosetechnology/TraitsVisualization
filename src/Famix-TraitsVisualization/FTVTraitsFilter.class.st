@@ -2,7 +2,6 @@ Class {
 	#name : #FTVTraitsFilter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'kinds',
 		'traits',
 		'selection',
 		'selectedTraits',
@@ -11,8 +10,8 @@ Class {
 	#category : #'Famix-TraitsVisualization-Utils'
 }
 
-{ #category : #specs }
-FTVTraitsFilter class >> defaultSpec [
+{ #category : #layout }
+FTVTraitsFilter class >> defaultLayout [
 
 	^ SpPanedLayout newHorizontal
 		  add: #traits;
@@ -27,7 +26,7 @@ FTVTraitsFilter class >> defaultSpec [
 FTVTraitsFilter class >> open [
 
 	<script>
-	self new openWithSpec
+	self new open
 ]
 
 { #category : #initialization }
@@ -37,7 +36,7 @@ FTVTraitsFilter >> initialize [
 	selectedTraits := OrderedCollection new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 FTVTraitsFilter >> initializePresenters [
 
 	super initializePresenters.
@@ -53,31 +52,31 @@ FTVTraitsFilter >> initializePresenters [
 		          (SpStringTableColumn title: 'Name' evaluated: #name);
 		          items:
 			          (((RPackageOrganizer default packageNamed: 'Famix-Traits')
-				            classTags asOrderedCollection sort: [ :t1 :t2 | 
+				            classTags asOrderedCollection sort: [ :t1 :t2 |
 				            t1 name < t2 name ]) flatCollect: [ :t | t classes ]);
 		          yourself.
 
 	selection := self newList.
-	button := self newButton whenActivatedDo: [ :b | 
+	button := self newButton whenActivatedDo: [ :b |
 		          selectedTraits inspect ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 FTVTraitsFilter >> isSelected: aTrait [
 
 	^ selectedTraits includes: aTrait
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #selection }
 FTVTraitsFilter >> selectTrait: aTrait [
 
 	selectedTraits add: aTrait.
-	selection items: selectedTraits 
+	selection items: selectedTraits
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #selection }
 FTVTraitsFilter >> unselectTrait: aTrait [
 
 	selectedTraits remove: aTrait.
-	selection items: selectedTraits 
+	selection items: selectedTraits
 ]

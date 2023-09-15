@@ -30,15 +30,15 @@ FTVUMLTraitDescriptor >> forPharo [
 
 	self
 		classname: #name;
-		instVars: [ :trait | 
+		instVars: [ :trait |
 			(trait instVarNames
 			 \ (trait allTraits flattened flatCollect: #instVarNames)) sorted ];
-		methods: [ :trait | 
-			trait localMethods sorted: [ :meth1 :meth2 | 
+		methods: [ :trait |
+			trait localMethods sorted: [ :meth1 :meth2 |
 					meth1 selector < meth2 selector ] ];
 		traits: [ :trait | trait traits ];
 		methodSelector: #selector;
-		instVarSelector: #name;
+		instVarSelector: #yourself;
 		methodsLimit: SmallInteger maxVal
 ]
 
@@ -64,6 +64,12 @@ FTVUMLTraitDescriptor >> instVars [
 FTVUMLTraitDescriptor >> instVars: anObject [
 
 	instVars := anObject
+]
+
+{ #category : #accessing }
+FTVUMLTraitDescriptor >> isAbstract [
+
+	^ false
 ]
 
 { #category : #accessing }

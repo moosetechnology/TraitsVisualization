@@ -12,11 +12,11 @@ FTVTelescopeDrafts >> addShapeFor: aTrait [
 
 	| shape |
 	shape := visu addNodeFromEntity: aTrait.
-"	aTrait traitUsers ifNotEmpty: [ 
+"	aTrait traitUsers ifNotEmpty: [
 		shape addInteraction:
 			(TLPopUpAction
 				 text: [ :trait | 'Expand users' ]
-				 position: [ :each | 
+				 position: [ :each |
 					 TLPosition new
 						 horizontal: #center;
 						 vertical: #bottom;
@@ -39,13 +39,13 @@ FTVTelescopeDrafts >> butterfly: aTrait [
 FTVTelescopeDrafts >> cycleDependencies: aTrait [
 
 	visu := TLCycleDependencies new
-		        entities: { 
+		        entities: {
 				        aTrait.
 				        (aTrait allUsers flattened select: #isTrait).
 				        aTrait traitComposition allTraits } flattened asSet;
 		        property: [ :trait | trait traitComposition traits ].
 
-	(visu > #packages) styleSheet borderColor: [ :trait | 
+	(visu > #packages) styleSheet borderColor: [ :trait |
 		trait = aTrait
 			ifTrue: [ Color red ]
 			ifFalse: Color black ].
@@ -59,7 +59,7 @@ FTVTelescopeDrafts >> cycleDependenciesAllTraits [
 
 	TLCycleDependencies new
 		entities:
-			((RPackageOrganizer default packageNamed: 'Famix-Traits') classes 
+			((RPackageOrganizer default packageNamed: 'Famix-Traits') classes
 				 select: #isTrait);
 		property: [ :each | each traitComposition traits ];
 		open
@@ -72,7 +72,7 @@ FTVTelescopeDrafts >> dynamicVisuForTrait2: aTrait [
 	visu addNodeFromEntity: aTrait.
 
 	visu addInteraction:
-		(TLExpandCollapseNodesAction property: [ :trait | 
+		(TLExpandCollapseNodesAction property: [ :trait |
 			 trait traitUsers select: [ :class | class isTrait ] ]) onClick.
 	"visu addInteraction:
 		(TLExpandCollapseNodesAction property: [ :trait | trait traits ])
@@ -93,7 +93,7 @@ FTVTelescopeDrafts >> dynamicVisuForTrait: aTrait [
 	"origin addInteraction: (TLShowAction on:
 			 (visu addNodeFromEntity: aTrait traitUsers anyOne) hide) onClick."
 	visu addInteraction:
-		(TLExpandCollapseNodesAction property: [ :trait | 
+		(TLExpandCollapseNodesAction property: [ :trait |
 			 trait traitUsers select: [ :class | class isTrait ] ]) onClick.
 	visu addInteraction: (TLHideAction hide: #yourself) onRightClick.
 
