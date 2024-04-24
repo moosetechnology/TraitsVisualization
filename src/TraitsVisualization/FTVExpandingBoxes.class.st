@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'children'
 	],
-	#category : #'Famix-TraitsVisualization-Roassal'
+	#category : #'TraitsVisualization-Roassal'
 }
 
 { #category : #'instance creation' }

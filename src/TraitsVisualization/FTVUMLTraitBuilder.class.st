@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'traits'
 	],
-	#category : #'Famix-TraitsVisualization-Roassal'
+	#category : #'TraitsVisualization-Roassal'
 }
 
 { #category : #initialization }

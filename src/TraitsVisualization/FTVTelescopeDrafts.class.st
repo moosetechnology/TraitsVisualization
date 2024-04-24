@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'visu'
 	],
-	#category : #'Famix-TraitsVisualization-Telescope'
+	#category : #'TraitsVisualization-Telescope'
 }
 
 { #category : #dynamic }

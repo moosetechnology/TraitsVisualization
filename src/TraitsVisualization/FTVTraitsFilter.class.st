@@ -7,7 +7,7 @@ Class {
 		'selectedTraits',
 		'button'
 	],
-	#category : #'Famix-TraitsVisualization-Utils'
+	#category : #'TraitsVisualization-Utils'
 }
 
 { #category : #layout }

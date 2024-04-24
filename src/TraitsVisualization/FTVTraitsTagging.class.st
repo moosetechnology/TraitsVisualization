@@ -5,7 +5,7 @@ Class {
 		'kinds',
 		'colorDict'
 	],
-	#category : #'Famix-TraitsVisualization-Utils'
+	#category : #'TraitsVisualization-Utils'
 }
 
 { #category : #querying }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'mainTrait'
 	],
-	#category : #'Famix-TraitsVisualization-Telescope'
+	#category : #'TraitsVisualization-Telescope'
 }
 
 { #category : #configuration }

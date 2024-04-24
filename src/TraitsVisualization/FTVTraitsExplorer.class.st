@@ -6,7 +6,7 @@ Class {
 		'view',
 		'categories'
 	],
-	#category : #'Famix-TraitsVisualization-Browser'
+	#category : #'TraitsVisualization-Browser'
 }
 
 { #category : #layout }

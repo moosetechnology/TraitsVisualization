@@ -10,7 +10,7 @@ Class {
 		'methodsLimit',
 		'classname'
 	],
-	#category : #'Famix-TraitsVisualization-Roassal'
+	#category : #'TraitsVisualization-Roassal'
 }
 
 { #category : #accessing }
